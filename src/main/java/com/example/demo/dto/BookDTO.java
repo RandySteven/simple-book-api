@@ -4,7 +4,7 @@ import com.example.demo.models.Book;
 
 public class BookDTO {
 
-    private static final String BASIC_URL = "http://localhost:8080/books/";
+    private static final String BASIC_URL = "https://simplebookapi.herokuapp.com/books/";
 
     private String bookTitle;
     private String bookGenre;
