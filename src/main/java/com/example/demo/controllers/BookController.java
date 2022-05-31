@@ -102,8 +102,7 @@ public class BookController implements BookDAO{
         addBook.setUpdatedAt(null);
 
         responseMap.put("book", addBook);
-        responseMap.put("resultStatus", "S");
-        responseMap.put("statusCode", 201);
+        responseMap.put("responseCode", 201);
         responseMap.put("responseMessage", "Post Book success");
 
         return responseMap;
