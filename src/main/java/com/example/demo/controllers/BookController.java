@@ -15,12 +15,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController 
@@ -52,7 +54,7 @@ public class BookController implements BookDAO{
         books = mongoTemplate.find(query, Book.class);
         
         if(books.isEmpty()){
-            responseMap.put("responseCode", 200);
+            responseMap.put("responseCode", 204);
             responseMap.put("responseMessage", "Book still empty");            
         }else{
             List<BookDTO> bookDTOs = new ArrayList<>();
@@ -79,12 +81,10 @@ public class BookController implements BookDAO{
                 responseMap.put("responseCode", 200);
                 responseMap.put("responseMessage", "Get Book");
             }else{
-                responseMap.put("responseCode", 404);
-                responseMap.put("responseMessage", "Book is not found :'(");
+                notFound();
             }
         }else{
-            responseMap.put("responseCode", 404);
-            responseMap.put("responseMessage", "Book is not found :'(");
+            notFound();
         }
 
         return responseMap;
@@ -92,6 +92,7 @@ public class BookController implements BookDAO{
 
     @Override
     @PostMapping(value = POST_BOOK_ENDPOINT, consumes = MediaType.ALL_VALUE)
+    @ResponseStatus(code = HttpStatus.CREATED, reason = "CREATED")
     public Map<String, Object> postBook(@RequestBody Book book) {
 
         responseMap = new HashMap<>();
@@ -106,6 +107,11 @@ public class BookController implements BookDAO{
         responseMap.put("responseMessage", "Post Book success");
 
         return responseMap;
+    }
+
+    private void notFound(){
+        responseMap.put("responseCode", 404);
+        responseMap.put("responseMessage", "Book is not found :'(");
     }
 
 }
