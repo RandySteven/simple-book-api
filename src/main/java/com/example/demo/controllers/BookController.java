@@ -92,7 +92,6 @@ public class BookController implements BookDAO{
 
     @Override
     @PostMapping(value = POST_BOOK_ENDPOINT, consumes = MediaType.ALL_VALUE)
-    @ResponseStatus(code = HttpStatus.CREATED, reason = "CREATED")
     public Map<String, Object> postBook(@RequestBody Book book) {
 
         responseMap = new HashMap<>();
@@ -105,6 +104,7 @@ public class BookController implements BookDAO{
         responseMap.put("book", addBook);
         responseMap.put("responseCode", 201);
         responseMap.put("responseMessage", "Post Book success");
+        responseMap.put("created", true);
 
         return responseMap;
     }
